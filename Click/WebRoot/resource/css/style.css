@@ -1,0 +1,11 @@
+/*reset*/
+
+body,ul,li,ol,img{margin: 0;padding: 0;}
+li{list-style: none;}
+
+
+
+
+.example1 ol{position:relative;width: 80px;height: 20px;top:-30px;left:40%;}
+.example1 ol li{float:left;width: 10px;height: 10px;margin: 5px;background: #fff; border-radius:5px;}
+.example1 ol li.seleted{background: #1AA4CA;}

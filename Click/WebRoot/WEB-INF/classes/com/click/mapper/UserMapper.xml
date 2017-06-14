@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.click.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.click.entity.User">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="username" jdbcType="VARCHAR" property="username" />
+		<result column="sex" jdbcType="INTEGER" property="sex" />
+		<result column="wechat" jdbcType="VARCHAR" property="wechat" />
+		<result column="head" jdbcType="VARCHAR" property="head" />
+		<result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="bg" jdbcType="VARCHAR" property="bg" />
+		<result column="signature" jdbcType="VARCHAR" property="signature" />
+		<result column="level" jdbcType="INTEGER" property="level" />
+		<result column="exp" jdbcType="INTEGER" property="exp" />
+	</resultMap>
+	<select id="signin" parameterType="string" resultType="user">
+		select *
+		from user where phone=#{0} and password=#{1}
+	</select>
+	<!-- 查询手机号是否已注册 -->
+	<select id="selectByPhone" parameterType="string" resultType="user">
+		select * from user where phone = #{phone}
+	</select>
+
+	<insert id="signup" parameterType="user">
+		insert into user (username,
+		phone, password
+		)
+		values(#{username,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="updateByPK" parameterType="user">
+		update user set username =
+		#{username}, wechat = #{wechat}, sex = #{sex},
+		birthday = #{birthday},
+		address = #{address}, bg = #{bg}, signature = #{signature} where phone
+		= #{phone}
+	</update>
+
+	<select id="findAll">
+		select * from user
+
+	</select>
+	<select id="findCarmemanByName" parameterType="user" resultType="user">
+		select * from user where username like '%${username}%' and type = 2
+	</select>
+
+	<select id="findCustomerByName" parameterType="user" resultType="user">
+		select * from user where username like '%${username}%' and type = 1
+	</select>
+
+	<select id="findAllCustomer" resultType="user">
+		select * from user where
+		type = 1 LIMIT 12
+	</select>
+
+	<select id="findAllCarmeman" resultType="user">
+		select * from user where
+		type = 2
+	</select>
+
+	<update id="picin" parameterType="user">
+		update user set type = 2 where phone = #{phone}
+	</update>
+	
+	<select id="configPasswd" parameterType="user" resultType="int">
+	select count(id) from user where phone = #{phone} and password = #{password}
+	</select>
+	
+	<update id="modPasswd" parameterType="user">
+	update user set password = #{password} where phone = #{phone}
+	</update>
+
+</mapper>

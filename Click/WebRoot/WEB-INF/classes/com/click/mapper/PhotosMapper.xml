@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.click.mapper.PhotosMapper">
+	<resultMap id="BaseResultMap" type="com.click.entity.Photos">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="path" jdbcType="VARCHAR" property="path" />
+		<result column="creattime" jdbcType="TIMESTAMP" property="creattime" />
+		<result column="likes" jdbcType="BIGINT" property="likes" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="com.click.entity.Photos">
+		<result column="description" jdbcType="LONGVARCHAR" property="description" />
+	</resultMap>
+
+	<insert id="uploadPhoto" parameterType="com.click.entity.Photos">
+
+		insert into photos (path, creattime, uid,
+		description, type)
+		values (#{path,jdbcType=VARCHAR}, #{creattime,jdbcType=TIMESTAMP}, #{uid,
+		jdbcType=INTEGER},
+		#{description,jdbcType=LONGVARCHAR}, #{type,jdbcType=INTEGER})
+
+	</insert>
+
+	<select id="findAllPhotosByUid" parameterType="user" resultType="photos">
+		select * from photos where uid like '${phone}%'
+	</select>
+	<select id="findAllCarmemanPhotos" parameterType="user"
+		resultType="photos">
+		select * from photos where type = 2 order by likes DESC;
+	</select>
+
+	<select id="findAllCustomerPhotos" parameterType="user"
+		resultType="photos">
+		select * from photos where type = 1 order by likes DESC;
+	</select>
+
+	<update id="likes" parameterType="photos">
+		update photos set likes = likes
+		+ #{likes} where id = #{id}
+	</update>
+</mapper>
